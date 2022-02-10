@@ -30,20 +30,10 @@ void setup() {
 
 void loop() {
   // if we get a valid byte, read analog ins:
-  while (Serial.available() > 0) {
-
-    // get incoming byte:
-    //inByte = Serial.read();
-    // read first analog input, divide by 4 to make the range 0-255:
-    //firstSensor = analogRead(A0) / 4;
-    // delay 10ms to let the ADC recover:
-    //delay(10);
-    // read second analog input, divide by 4 to make the range 0-255:
-    //secondSensor = analogRead(1) / 4;
-    // read switch, map it to 0 or 255L
-    //thirdSensor = map(digitalRead(2), 0, 1, 0, 255);
-    // send sensor values:
+  Serial.println('K');
+  while (Serial.available() > 0) {    
     gps.encode(Serial.read());
+    Serial.println('Y');
     if (millis() - last_send > WAITTIME) {
         unsigned long age;
         gps.f_get_position(&LAT, &LNG, &age);
@@ -52,7 +42,9 @@ void loop() {
 
         if (LAT == TinyGPS::GPS_INVALID_F_ANGLE || LNG == TinyGPS::GPS_INVALID_F_ANGLE || CRS == TinyGPS::GPS_INVALID_F_ANGLE || SPD == TinyGPS::GPS_INVALID_F_SPEED) {
             //dont send
+            Serial.println('X');
         } else {
+          Serial.print("This please");
           Serial.print("&TYPE");  
           Serial.print("&ID");  
           Serial.print("&LAT");  
@@ -68,7 +60,7 @@ void loop() {
             memcpy(msg_buf + 10, &SIZ, 4);
             memcpy(msg_buf + 14, &CRS, 4);
             memcpy(msg_buf + 18, &SPD, 4);
-*/        }
+       }*/ 
     last_send = millis();
 
 
@@ -80,9 +72,16 @@ void loop() {
     //Serial.write(firstSensor);
     //Serial.write(secondSensor);
     //Serial.write(thirdSensor);
+    }
   }
 }
-
+static void print_str(const char *str, int len)
+{
+  int slen = strlen(str);
+  for (int i=0; i<len; ++i)
+    Serial.print(i<slen ? str[i] : ' ');
+  smartdelay(0);
+}
 void establishContact() {
   int i=0;
   if (Serial.available() <= 0) {
