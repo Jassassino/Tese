@@ -25,6 +25,7 @@ More about this example, please see:
 RH_RF95 rf95;
 TinyGPS gps;
 SoftwareSerial ss(3, 4);
+
 String datastring="";
 String datastring1="";
 char databuf[100];
@@ -35,19 +36,21 @@ char gps_lat[20]={"\0"};
 void setup()
 {
   
-  Serial.begin(9600);
+  Serial.begin(115200);
   ss.begin(9600);
     if (!rf95.init())
     Serial.println("init failed");
+    rf95.setFrequency(868.0);
     // Defaults after init are 434.0MHz, 13dBm, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on
     Serial.print("Simple TinyGPS library v. "); Serial.println(TinyGPS::library_version());
     Serial.println();
+    
 }
 
 void loop()
 { 
   // Print Sending to rf95_server
-  Serial.println("Sending to rf95_server");
+  //Serial.println("Sending to rf95_server");
   bool newData = false;
   unsigned long chars;
   unsigned short sentences, failed;
@@ -58,6 +61,7 @@ void loop()
     while (ss.available()>0)
     {
       char c = ss.read();
+      
       Serial.write(c); // uncomment this line if you want to see the GPS data flowing
       if (gps.encode(c)) // Did a new valid sentence come in?
       newData = true;
