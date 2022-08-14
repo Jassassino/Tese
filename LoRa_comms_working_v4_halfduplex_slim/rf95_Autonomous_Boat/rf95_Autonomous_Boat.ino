@@ -18,8 +18,6 @@ void setup()
   while (!Serial) ; // Wait for serial port to be available
   if (!lora.init())
     Serial.println("init failed");
-  lora.setFrequency(868.1);
-  lora.setModemConfig(RH_RF95::Bw125Cr45Sf128);
   // Defaults after init are 434.0MHz, 13dBm, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on
   // You can change the modulation parameters with eg
   // lora.setModemConfig(RH_RF95::Bw500Cr45Sf128);
@@ -36,15 +34,20 @@ void loop()
   RecvMessageLoRa();
   delay(500);
   if(Serial.available()){
-    while(Serial.available()){
+    while(Serial.available()&& i<=126){
       readserial[i]=Serial.read();
       i++;
     }
     SendMessageLoRa(readserial, i);
+    SendMessageLoRa(readserial, i);
+    SendMessageLoRa(readserial, i);
+    SendMessageLoRa(readserial, i);
+    SendMessageLoRa(readserial, i);
+    memset(readserial, 0, sizeof(readserial));//clear array
     i=0;
   } 
   else {
-    SendMessageLoRa(0,0);
+    //SendMessageLoRa(0,0);
   }
 }
 
@@ -55,8 +58,8 @@ void SendMessageLoRa(uint8_t *data, int datasize){
   //uint8_t data[] = "Current ASV position \n$GPGLL,4916.45,N,12311.12,W,225444,A";
   lora.send(data, datasize);
   lora.waitPacketSent();
-  Serial.println("Data Sent:");
-  Serial.println((char*)data);
+  //Serial.println("Data Sent:");
+  //Serial.println((char*)data);
 
 }
 
@@ -72,7 +75,7 @@ void RecvMessageLoRa(){
    {
 //      Serial.println("Connected!");
       if(len){
-        Serial.print("Data Received:");
+        //Serial.print("Data Received:");
         Serial.println((char*)buf);
       }
  
