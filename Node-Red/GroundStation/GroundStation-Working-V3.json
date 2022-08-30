@@ -1,0 +1,927 @@
+[
+    {
+        "id": "cc39bf8743eb857c",
+        "type": "tab",
+        "label": "GroundStation",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7f0e257ac939015c",
+        "type": "worldmap",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "lat": "38.7223",
+        "lon": "-9.1393",
+        "zoom": "12",
+        "layer": "EsriT",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "false",
+        "coords": "none",
+        "showgrid": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO,RW,SN",
+        "maplist": "OSMG,OSMC,EsriS,EsriT,UKOS",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 1260,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "865886d942d523e2",
+        "type": "mongodb-aleph-out",
+        "z": "cc39bf8743eb857c",
+        "mongodb": "96e7ebf37fcc7789",
+        "name": "InsertGPSTimeDB",
+        "collection": "ASV-GPS-Data",
+        "payonly": false,
+        "upsert": false,
+        "multi": false,
+        "operation": "insert",
+        "x": 990,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d50bae19f6e9ec90",
+        "type": "debug",
+        "z": "cc39bf8743eb857c",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "e534715b0ad0fa24",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "GPS-Test",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$GPGLL,4916.45,N,12311.12,W,225444,A*31",
+        "payloadType": "str",
+        "x": 120,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "20a4a62237a9b865",
+        "type": "function",
+        "z": "cc39bf8743eb857c",
+        "name": "Check Map Event",
+        "func": "var newobject = {};\n\nif (msg.payload.action === \"point\") {\n    newobject = { lat: msg.payload.lat, lon: msg.payload.lon, name: msg.payload.point, radius: 500 };\n    msg.payload = newobject;\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 100,
+        "wires": [
+            [
+                "7f0e257ac939015c"
+            ]
+        ]
+    },
+    {
+        "id": "c952f01875a4d442",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "GPS-Test",
+        "props": [
+            {
+                "p": "payload.Object",
+                "v": "$GPGLL,4916.45,N,12311.12,W,225444,A*31",
+                "vt": "str"
+            },
+            {
+                "p": "payload.name",
+                "v": "Poop",
+                "vt": "str"
+            },
+            {
+                "p": "payload.icon",
+                "v": "fa-ship",
+                "vt": "str"
+            },
+            {
+                "p": "payload.lat",
+                "v": "38.7",
+                "vt": "str"
+            },
+            {
+                "p": "payload.lon",
+                "v": "-9.1393",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 120,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7a9e415dec1e9f1b",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "GPS-Test",
+        "props": [
+            {
+                "p": "payload.Object",
+                "v": "$GPGGA,170834,4124.8963,N,08151.6838,W,1,05,1.5,280.2,M,-34.0,M,,,*75",
+                "vt": "str"
+            },
+            {
+                "p": "payload.name",
+                "v": "Poop",
+                "vt": "str"
+            },
+            {
+                "p": "payload.icon",
+                "v": "fa-ship",
+                "vt": "str"
+            },
+            {
+                "p": "payload.lat",
+                "v": "38.73",
+                "vt": "str"
+            },
+            {
+                "p": "payload.lon",
+                "v": "-9.1397",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 120,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bdf57ab68ce4b32d",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "GPS-Test",
+        "props": [
+            {
+                "p": "payload.Object",
+                "v": "$GPGGA,170834,4124.8963,N,08151.6838,W,1,05,1.5,280.2,M,-34.0,M,,,*75",
+                "vt": "str"
+            },
+            {
+                "p": "payload.name",
+                "v": "Poop",
+                "vt": "str"
+            },
+            {
+                "p": "payload.icon",
+                "v": "fa-ship",
+                "vt": "str"
+            },
+            {
+                "p": "payload.lat",
+                "v": "38.75",
+                "vt": "str"
+            },
+            {
+                "p": "payload.lon",
+                "v": "-9.139",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 120,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b0dc317f92fb1f29",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "GPS-Test",
+        "props": [
+            {
+                "p": "payload.Object",
+                "v": "$GPGGA,170834,4124.8963,N,08151.6838,W,1,05,1.5,280.2,M,-34.0,M,,,*75",
+                "vt": "str"
+            },
+            {
+                "p": "payload.name",
+                "v": "Poop",
+                "vt": "str"
+            },
+            {
+                "p": "payload.icon",
+                "v": "fa-ship",
+                "vt": "str"
+            },
+            {
+                "p": "payload.lat",
+                "v": "38.734",
+                "vt": "str"
+            },
+            {
+                "p": "payload.lon",
+                "v": "-9.14",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 120,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7024a5b22492f007",
+        "type": "worldmap in",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "path": "/worldmap",
+        "events": "connect,disconnect,point,layer,bounds,files,draw,other",
+        "x": 780,
+        "y": 100,
+        "wires": [
+            [
+                "20a4a62237a9b865"
+            ]
+        ]
+    },
+    {
+        "id": "f0f9994d8a420ccf",
+        "type": "serial in",
+        "z": "cc39bf8743eb857c",
+        "name": "Arduino2",
+        "serial": "1d73bf26433c1923",
+        "x": 100,
+        "y": 240,
+        "wires": [
+            [
+                "c836291d32aded89"
+            ]
+        ]
+    },
+    {
+        "id": "51a8bedaea3e7e00",
+        "type": "nmea",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "property": "payload",
+        "outputProperty": "payload",
+        "x": 430,
+        "y": 240,
+        "wires": [
+            [
+                "d50bae19f6e9ec90",
+                "2be317ed974aeb6b"
+            ]
+        ]
+    },
+    {
+        "id": "f5c3204a1b334fc8",
+        "type": "serial in",
+        "z": "cc39bf8743eb857c",
+        "name": "GPS-VK162",
+        "serial": "e583a9371e034ece",
+        "x": 110,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "de6175c2cbfb143c",
+        "type": "debug",
+        "z": "cc39bf8743eb857c",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "2be317ed974aeb6b",
+        "type": "function",
+        "z": "cc39bf8743eb857c",
+        "name": "Form Worldmap Message",
+        "func": "msg.payload.name = \"ASV-1\";\nmsg.payload.icon = \"fa-ship\";\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nreturn msg",
+        "libs": [],
+        "x": 670,
+        "y": 240,
+        "wires": [
+            [
+                "7f0e257ac939015c",
+                "865886d942d523e2",
+                "3d24ec3a2141a21b",
+                "b950e8c3601b521b",
+                "aa820f55e5c3bc66",
+                "b81f0d67a711184a",
+                "ba9242f97960099c",
+                "4e16ee0d351161b9",
+                "07597929aa4fcc4f",
+                "76f20a4a721ba39a"
+            ]
+        ]
+    },
+    {
+        "id": "2bb391faf8133ab8",
+        "type": "ui_worldmap",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "lat": "38.7223",
+        "lon": "-9.1393",
+        "zoom": "12",
+        "layer": "EsriT",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "hide",
+        "layers": "hide",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "true",
+        "coords": "none",
+        "showgrid": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO,RA,DN,HM",
+        "maplist": "OSMG,OSMC,EsriC,EsriS,EsriT,EsriDG,UKOS",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 1260,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "1e4596c91b7d4e11",
+        "type": "ui_gauge",
+        "z": "cc39bf8743eb857c",
+        "name": "Speed",
+        "group": "5fbf2137c501ca6c",
+        "order": 4,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Speed over Water",
+        "label": "Knots",
+        "format": "{{msg.payload.speedKnots}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "0.5",
+        "seg2": "0.7",
+        "className": "",
+        "x": 1090,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "4c323848d55603c4",
+        "type": "ui_button",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "group": "5fbf2137c501ca6c",
+        "order": 2,
+        "width": "2",
+        "height": "2",
+        "passthru": true,
+        "label": "ASV-1",
+        "tooltip": "",
+        "color": "#fffff",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 470,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "73df1c0287a6b5e3",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "GPS-Test",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "15",
+        "payloadType": "str",
+        "x": 120,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ba5a4a3b3d881ee6",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "GPS-Test",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "4",
+        "payloadType": "str",
+        "x": 120,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2f9029160c564f5d",
+        "type": "ui_button",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "group": "5fbf2137c501ca6c",
+        "order": 3,
+        "width": "2",
+        "height": "2",
+        "passthru": true,
+        "label": "ASV-2",
+        "tooltip": "",
+        "color": "#fffff",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 470,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "76f20a4a721ba39a",
+        "type": "ui_gauge",
+        "z": "cc39bf8743eb857c",
+        "name": "Direction",
+        "group": "5fbf2137c501ca6c",
+        "order": 4,
+        "width": "4",
+        "height": "4",
+        "gtype": "compass",
+        "title": "{{payload.trackTrue}}",
+        "label": "Degrees",
+        "format": "{{payload.trackTrue}}",
+        "min": 0,
+        "max": "360",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1260,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c836291d32aded89",
+        "type": "function",
+        "z": "cc39bf8743eb857c",
+        "name": "function 1",
+        "func": "if(msg.payload.length <= 10){\n    msg.payload = \"No message received\";\n    return;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 240,
+        "wires": [
+            [
+                "51a8bedaea3e7e00",
+                "de6175c2cbfb143c"
+            ]
+        ]
+    },
+    {
+        "id": "3d24ec3a2141a21b",
+        "type": "ui_valuetrail",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 7,
+        "width": "4",
+        "height": "2",
+        "name": "Latitude",
+        "label": "",
+        "unit": "",
+        "blur": false,
+        "minmax": false,
+        "allowtoggle": false,
+        "showvalue": true,
+        "decimals": 0,
+        "colorLine": "#ff4000",
+        "colorFromTheme": false,
+        "stroke": 2,
+        "property": "payload.lat",
+        "pointcount": "3",
+        "x": 1100,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "b950e8c3601b521b",
+        "type": "ui_valuetrail",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 7,
+        "width": "4",
+        "height": "2",
+        "name": "Longitude",
+        "label": "",
+        "unit": "",
+        "blur": false,
+        "minmax": false,
+        "allowtoggle": false,
+        "showvalue": true,
+        "decimals": 0,
+        "colorLine": "#ff9900",
+        "colorFromTheme": false,
+        "stroke": 2,
+        "property": "payload.lon",
+        "pointcount": "3",
+        "x": 1100,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "aa820f55e5c3bc66",
+        "type": "ui_level",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 7,
+        "width": "3",
+        "height": "3",
+        "name": "",
+        "label": "Speed",
+        "colorHi": "#e60000",
+        "colorWarn": "#ff9900",
+        "colorNormal": "#00b33c",
+        "colorOff": "#595959",
+        "min": 0,
+        "max": "1",
+        "segWarn": "0.3",
+        "segHigh": "0.5",
+        "unit": "Knots",
+        "layout": "sv",
+        "channelA": "",
+        "channelB": "",
+        "decimals": "3",
+        "animations": "rocket",
+        "shape": 2,
+        "colorschema": "fixed",
+        "textoptions": "default",
+        "colorText": "#eeeeee",
+        "fontLabel": "",
+        "fontValue": "",
+        "fontSmall": "",
+        "colorFromTheme": true,
+        "textAnimations": true,
+        "hideValue": false,
+        "tickmode": "off",
+        "peakmode": false,
+        "property": "payload.speedKnots",
+        "peaktime": 3000,
+        "x": 1090,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "ba9242f97960099c",
+        "type": "ui_text",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 8,
+        "width": "3",
+        "height": "2",
+        "name": "",
+        "label": "Status",
+        "format": "{{msg.payload.status}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 1090,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "b81f0d67a711184a",
+        "type": "worldmap-tracks",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "depth": 20,
+        "layer": "combined",
+        "smooth": true,
+        "x": 1090,
+        "y": 300,
+        "wires": [
+            [
+                "2bb391faf8133ab8"
+            ]
+        ]
+    },
+    {
+        "id": "18aaef3d16825703",
+        "type": "trigger",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "op1": "",
+        "op2": "0",
+        "op1type": "pay",
+        "op2type": "str",
+        "duration": "-10",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "payload.speedKnots",
+        "outputs": 1,
+        "x": 910,
+        "y": 560,
+        "wires": [
+            [
+                "1e4596c91b7d4e11",
+                "30c351f131ce3b75"
+            ]
+        ]
+    },
+    {
+        "id": "21c79c182241efad",
+        "type": "debug",
+        "z": "cc39bf8743eb857c",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "027d020be9a5a17b",
+        "type": "trigger",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "op1": "",
+        "op2": "0",
+        "op1type": "pay",
+        "op2type": "str",
+        "duration": "-150",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "payload.trackTrue",
+        "outputs": 1,
+        "x": 920,
+        "y": 400,
+        "wires": [
+            [
+                "76f20a4a721ba39a",
+                "21c79c182241efad"
+            ]
+        ]
+    },
+    {
+        "id": "30c351f131ce3b75",
+        "type": "debug",
+        "z": "cc39bf8743eb857c",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "4e16ee0d351161b9",
+        "type": "switch",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "property": "payload.sentence",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "RMC",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 730,
+        "y": 400,
+        "wires": [
+            [
+                "027d020be9a5a17b"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "07597929aa4fcc4f",
+        "type": "switch",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "property": "payload.sentence",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "RMC",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 730,
+        "y": 560,
+        "wires": [
+            [
+                "18aaef3d16825703"
+            ]
+        ]
+    },
+    {
+        "id": "96e7ebf37fcc7789",
+        "type": "mongodb-aleph-config",
+        "hostname": "asv-tracker.ubzg5ni.mongodb.net",
+        "topology": "dnscluster",
+        "connectOptions": "",
+        "port": "27017",
+        "db": "ASV-Tracker",
+        "name": "SEAIoT-Database"
+    },
+    {
+        "id": "1d73bf26433c1923",
+        "type": "serial-port",
+        "serialport": "COM7",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "e583a9371e034ece",
+        "type": "serial-port",
+        "serialport": "COM11",
+        "serialbaud": "38400",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "5fbf2137c501ca6c",
+        "type": "ui_group",
+        "name": "Monitoring Dashboard",
+        "tab": "f76c8797.584da8",
+        "order": 1,
+        "disp": true,
+        "width": "24",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f76c8797.584da8",
+        "type": "ui_tab",
+        "name": "GPS Tracker",
+        "icon": "gps_fixed",
+        "order": 21
+    }
+]
