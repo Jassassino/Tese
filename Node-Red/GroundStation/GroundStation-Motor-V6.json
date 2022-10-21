@@ -1,0 +1,1224 @@
+[
+    {
+        "id": "cc39bf8743eb857c",
+        "type": "tab",
+        "label": "GroundStation",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7f0e257ac939015c",
+        "type": "worldmap",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "lat": "38.7223",
+        "lon": "-9.1393",
+        "zoom": "12",
+        "layer": "EsriT",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "false",
+        "coords": "none",
+        "showgrid": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO,RW,SN",
+        "maplist": "OSMG,OSMC,EsriS,EsriT,UKOS",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 1420,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "865886d942d523e2",
+        "type": "mongodb-aleph-out",
+        "z": "cc39bf8743eb857c",
+        "mongodb": "96e7ebf37fcc7789",
+        "name": "InsertGPSTimeDB",
+        "collection": "ASV-GPS-Data",
+        "payonly": false,
+        "upsert": false,
+        "multi": false,
+        "operation": "insert",
+        "x": 1070,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d50bae19f6e9ec90",
+        "type": "debug",
+        "z": "cc39bf8743eb857c",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "20a4a62237a9b865",
+        "type": "function",
+        "z": "cc39bf8743eb857c",
+        "name": "Check Map Event",
+        "func": "var newobject = {};\n\nif (msg.payload.action === \"point\") {\n    newobject = { lat: msg.payload.lat, lon: msg.payload.lon, name: msg.payload.point, radius: 500 };\n    msg.payload = newobject;\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 20,
+        "wires": [
+            [
+                "7f0e257ac939015c"
+            ]
+        ]
+    },
+    {
+        "id": "7024a5b22492f007",
+        "type": "worldmap in",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "path": "/worldmap",
+        "events": "connect,disconnect,point,layer,bounds,files,draw,other",
+        "x": 1000,
+        "y": 20,
+        "wires": [
+            [
+                "20a4a62237a9b865"
+            ]
+        ]
+    },
+    {
+        "id": "f0f9994d8a420ccf",
+        "type": "serial in",
+        "z": "cc39bf8743eb857c",
+        "name": "LoRa Receiver",
+        "serial": "1d73bf26433c1923",
+        "x": 80,
+        "y": 220,
+        "wires": [
+            [
+                "c836291d32aded89"
+            ]
+        ]
+    },
+    {
+        "id": "51a8bedaea3e7e00",
+        "type": "nmea",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "property": "payload",
+        "outputProperty": "payload",
+        "x": 650,
+        "y": 220,
+        "wires": [
+            [
+                "2be317ed974aeb6b"
+            ]
+        ]
+    },
+    {
+        "id": "2be317ed974aeb6b",
+        "type": "function",
+        "z": "cc39bf8743eb857c",
+        "name": "Form Worldmap Message",
+        "func": "msg.payload.name = \"ASV-1\";\nmsg.payload.icon = \"fa-ship\";\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nreturn msg",
+        "libs": [],
+        "x": 830,
+        "y": 220,
+        "wires": [
+            [
+                "7f0e257ac939015c",
+                "3d24ec3a2141a21b",
+                "b950e8c3601b521b",
+                "aa820f55e5c3bc66",
+                "b81f0d67a711184a",
+                "4e16ee0d351161b9",
+                "76f20a4a721ba39a",
+                "d50bae19f6e9ec90"
+            ]
+        ]
+    },
+    {
+        "id": "2bb391faf8133ab8",
+        "type": "ui_worldmap",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 8,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "lat": "38.7223",
+        "lon": "-9.1393",
+        "zoom": "12",
+        "layer": "EsriT",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "hide",
+        "layers": "hide",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "true",
+        "coords": "none",
+        "showgrid": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO,RA,DN,HM",
+        "maplist": "OSMG,OSMC,EsriC,EsriS,EsriT,EsriDG,UKOS",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 1420,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "1e4596c91b7d4e11",
+        "type": "ui_gauge",
+        "z": "cc39bf8743eb857c",
+        "name": "Speed",
+        "group": "5fbf2137c501ca6c",
+        "order": 10,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Speed over Water",
+        "label": "Knots",
+        "format": "{{msg.payload.speedKnots}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "0.5",
+        "seg2": "0.7",
+        "className": "",
+        "x": 1410,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "76f20a4a721ba39a",
+        "type": "ui_gauge",
+        "z": "cc39bf8743eb857c",
+        "name": "Direction",
+        "group": "5fbf2137c501ca6c",
+        "order": 9,
+        "width": "4",
+        "height": "4",
+        "gtype": "compass",
+        "title": "{{payload.trackTrue}}",
+        "label": "Degrees",
+        "format": "{{payload.trackTrue}}",
+        "min": 0,
+        "max": "360",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1420,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "c836291d32aded89",
+        "type": "function",
+        "z": "cc39bf8743eb857c",
+        "name": "Restrict Inputs",
+        "func": "if (msg.payload.length >= 18) {\n    if (msg.payload[msg.payload.length - 5].toString(16) == \"*\" && msg.payload[0].toString(16) == \"$\") {\n        var status = {payload: \"Updated\"}\n        return [msg, status];\n    }\n}\nif (msg.payload == \"Valid\\r\\n\" || msg.payload == \"Unknown\\r\\n\")\n    return [null, msg];\n//msg.payload = msg.payload[msg.payload.length - 3];\nreturn;",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 220,
+        "wires": [
+            [
+                "041378fd577b6063",
+                "21a0c21bd46bab29"
+            ],
+            [
+                "4ae68b9eeda77224",
+                "21a0c21bd46bab29"
+            ]
+        ]
+    },
+    {
+        "id": "3d24ec3a2141a21b",
+        "type": "ui_valuetrail",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 14,
+        "width": "4",
+        "height": "2",
+        "name": "Latitude",
+        "label": "",
+        "unit": "",
+        "blur": false,
+        "minmax": false,
+        "allowtoggle": false,
+        "showvalue": true,
+        "decimals": "5",
+        "colorLine": "#ff4000",
+        "colorFromTheme": false,
+        "stroke": 2,
+        "property": "payload.lat",
+        "pointcount": "3",
+        "x": 1420,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "b950e8c3601b521b",
+        "type": "ui_valuetrail",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 15,
+        "width": "4",
+        "height": "2",
+        "name": "Longitude",
+        "label": "",
+        "unit": "",
+        "blur": false,
+        "minmax": false,
+        "allowtoggle": false,
+        "showvalue": true,
+        "decimals": "5",
+        "colorLine": "#ff9900",
+        "colorFromTheme": false,
+        "stroke": "3",
+        "property": "payload.lon",
+        "pointcount": "6",
+        "x": 1420,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "aa820f55e5c3bc66",
+        "type": "ui_level",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 11,
+        "width": "3",
+        "height": "3",
+        "name": "",
+        "label": "Speed",
+        "colorHi": "#e60000",
+        "colorWarn": "#ff9900",
+        "colorNormal": "#00b33c",
+        "colorOff": "#595959",
+        "min": 0,
+        "max": "1",
+        "segWarn": "0.3",
+        "segHigh": "0.5",
+        "unit": "Knots",
+        "layout": "sv",
+        "channelA": "",
+        "channelB": "",
+        "decimals": "3",
+        "animations": "rocket",
+        "shape": 2,
+        "colorschema": "fixed",
+        "textoptions": "default",
+        "colorText": "#eeeeee",
+        "fontLabel": "",
+        "fontValue": "",
+        "fontSmall": "",
+        "colorFromTheme": true,
+        "textAnimations": true,
+        "hideValue": false,
+        "tickmode": "off",
+        "peakmode": false,
+        "property": "payload.speedKnots",
+        "peaktime": 3000,
+        "x": 1410,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "ba9242f97960099c",
+        "type": "ui_text",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 1,
+        "width": "3",
+        "height": "2",
+        "name": "",
+        "label": "Status",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 910,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "b81f0d67a711184a",
+        "type": "worldmap-tracks",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "depth": 20,
+        "layer": "combined",
+        "smooth": true,
+        "x": 1270,
+        "y": 280,
+        "wires": [
+            [
+                "2bb391faf8133ab8"
+            ]
+        ]
+    },
+    {
+        "id": "18aaef3d16825703",
+        "type": "trigger",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "op1": "",
+        "op2": "0",
+        "op1type": "pay",
+        "op2type": "str",
+        "duration": "-10",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "payload.speedKnots",
+        "outputs": 1,
+        "x": 1190,
+        "y": 540,
+        "wires": [
+            [
+                "1e4596c91b7d4e11"
+            ]
+        ]
+    },
+    {
+        "id": "027d020be9a5a17b",
+        "type": "trigger",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "op1": "",
+        "op2": "0",
+        "op1type": "pay",
+        "op2type": "str",
+        "duration": "-10",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "payload.trackTrue",
+        "outputs": 1,
+        "x": 1190,
+        "y": 480,
+        "wires": [
+            [
+                "76f20a4a721ba39a"
+            ]
+        ]
+    },
+    {
+        "id": "4e16ee0d351161b9",
+        "type": "switch",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "property": "payload.sentence",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "RMC",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1010,
+        "y": 500,
+        "wires": [
+            [
+                "027d020be9a5a17b",
+                "18aaef3d16825703"
+            ]
+        ]
+    },
+    {
+        "id": "f105563bda06fce6",
+        "type": "ui_level",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 12,
+        "width": "3",
+        "height": "3",
+        "name": "Temp",
+        "label": "Temperature",
+        "colorHi": "#e60000",
+        "colorWarn": "#20cf20",
+        "colorNormal": "#f9b43e",
+        "colorOff": "#595959",
+        "min": "-10",
+        "max": "50",
+        "segWarn": "5",
+        "segHigh": "30",
+        "unit": "Celsius",
+        "layout": "sv",
+        "channelA": "",
+        "channelB": "",
+        "decimals": "3",
+        "animations": "rocket",
+        "shape": 2,
+        "colorschema": "fixed",
+        "textoptions": "default",
+        "colorText": "#eeeeee",
+        "fontLabel": "",
+        "fontValue": "",
+        "fontSmall": "",
+        "colorFromTheme": true,
+        "textAnimations": true,
+        "hideValue": false,
+        "tickmode": "off",
+        "peakmode": false,
+        "property": "payload",
+        "peaktime": 3000,
+        "x": 1410,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "47907acae98212eb",
+        "type": "switch",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "-10",
+                "vt": "num",
+                "v2": "50",
+                "v2t": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 990,
+        "y": 600,
+        "wires": [
+            [
+                "f105563bda06fce6"
+            ]
+        ]
+    },
+    {
+        "id": "20e04c938c881fa3",
+        "type": "ui_level",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 13,
+        "width": "3",
+        "height": "3",
+        "name": "Pressure",
+        "label": "Pressure",
+        "colorHi": "#e60000",
+        "colorWarn": "#ff9900",
+        "colorNormal": "#00b33c",
+        "colorOff": "#595959",
+        "min": 0,
+        "max": "3",
+        "segWarn": "1",
+        "segHigh": "1.5",
+        "unit": "Bars",
+        "layout": "sv",
+        "channelA": "",
+        "channelB": "",
+        "decimals": "3",
+        "animations": "rocket",
+        "shape": 2,
+        "colorschema": "fixed",
+        "textoptions": "default",
+        "colorText": "#eeeeee",
+        "fontLabel": "",
+        "fontValue": "",
+        "fontSmall": "",
+        "colorFromTheme": true,
+        "textAnimations": true,
+        "hideValue": false,
+        "tickmode": "off",
+        "peakmode": false,
+        "property": "payload",
+        "peaktime": 3000,
+        "x": 1420,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "41de1b9a1646da08",
+        "type": "split",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "splt": ",",
+        "spltType": "str",
+        "arraySplt": "5",
+        "arraySpltType": "len",
+        "stream": true,
+        "addname": "payload.Temp",
+        "x": 850,
+        "y": 600,
+        "wires": [
+            [
+                "47907acae98212eb"
+            ]
+        ]
+    },
+    {
+        "id": "041378fd577b6063",
+        "type": "switch",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "TempAir",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "Barometer",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 3,
+        "x": 490,
+        "y": 220,
+        "wires": [
+            [
+                "41de1b9a1646da08",
+                "a674e0d441c84cba"
+            ],
+            [
+                "574665255fc325a2",
+                "a674e0d441c84cba"
+            ],
+            [
+                "51a8bedaea3e7e00",
+                "a674e0d441c84cba"
+            ]
+        ]
+    },
+    {
+        "id": "574665255fc325a2",
+        "type": "split",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "splt": ",",
+        "spltType": "str",
+        "arraySplt": "5",
+        "arraySpltType": "len",
+        "stream": true,
+        "addname": "payload.Temp",
+        "x": 850,
+        "y": 660,
+        "wires": [
+            [
+                "be97f49077c1f4a5"
+            ]
+        ]
+    },
+    {
+        "id": "be97f49077c1f4a5",
+        "type": "switch",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "0",
+                "vt": "num",
+                "v2": "10",
+                "v2t": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 990,
+        "y": 660,
+        "wires": [
+            [
+                "20e04c938c881fa3"
+            ]
+        ]
+    },
+    {
+        "id": "ce13999010f2480e",
+        "type": "mongodb-aleph-out",
+        "z": "cc39bf8743eb857c",
+        "mongodb": "96e7ebf37fcc7789",
+        "name": "Information Sent mongoDB",
+        "collection": "ASV-GPS-Data",
+        "payonly": false,
+        "upsert": false,
+        "multi": false,
+        "operation": "insert",
+        "x": 1400,
+        "y": 880,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "864676e8659b9066",
+        "type": "function",
+        "z": "cc39bf8743eb857c",
+        "name": "Form Worldmap Message",
+        "func": "msg.payload.name = \"ASV-1\";\nmsg.payload.icon = \"fa-ship\";\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nreturn msg",
+        "libs": [],
+        "x": 1150,
+        "y": 800,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a674e0d441c84cba",
+        "type": "debug",
+        "z": "cc39bf8743eb857c",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "4ae68b9eeda77224",
+        "type": "show-value",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "path": "",
+        "x": 730,
+        "y": 280,
+        "wires": [
+            [
+                "ba9242f97960099c"
+            ]
+        ]
+    },
+    {
+        "id": "bcbc594b605660f2",
+        "type": "serial out",
+        "z": "cc39bf8743eb857c",
+        "name": "LoRa Sender",
+        "serial": "1d73bf26433c1923",
+        "x": 1350,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "fb68e337f433690c",
+        "type": "delay",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "35",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 950,
+        "y": 980,
+        "wires": [
+            [
+                "7c7978113e3639c1"
+            ]
+        ]
+    },
+    {
+        "id": "0a286f349d8bb8f3",
+        "type": "ui_switch",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "label": "Pilot",
+        "tooltip": "",
+        "group": "5fbf2137c501ca6c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "pilot",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "RCON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "RCOFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 350,
+        "y": 1100,
+        "wires": [
+            [
+                "e87c6521e36e273d"
+            ]
+        ]
+    },
+    {
+        "id": "8d38fb5ad4e68412",
+        "type": "ui_slider",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "label": "Speed Guide",
+        "tooltip": "",
+        "group": "5fbf2137c501ca6c",
+        "order": 6,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "outs": "all",
+        "topic": "speed",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": "5",
+        "className": "",
+        "x": 350,
+        "y": 980,
+        "wires": [
+            [
+                "be2fc53d3bcef096",
+                "713215fbe9e0915f",
+                "ee5ad316e5448dc8"
+            ]
+        ]
+    },
+    {
+        "id": "7c7978113e3639c1",
+        "type": "show-value",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "path": "",
+        "x": 1130,
+        "y": 980,
+        "wires": [
+            [
+                "bcbc594b605660f2",
+                "a11849cb0d7abee8"
+            ]
+        ]
+    },
+    {
+        "id": "62e3c9a786add8f4",
+        "type": "ui_text",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 3,
+        "width": "3",
+        "height": "2",
+        "name": "",
+        "label": "Steering Set",
+        "format": "{{msg.payload.steering}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 570,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "be2fc53d3bcef096",
+        "type": "ui_text",
+        "z": "cc39bf8743eb857c",
+        "group": "5fbf2137c501ca6c",
+        "order": 4,
+        "width": "3",
+        "height": "2",
+        "name": "",
+        "label": "Speed Set",
+        "format": "{{msg.payload.speed}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 570,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "21a0c21bd46bab29",
+        "type": "show-value",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "path": "",
+        "x": 510,
+        "y": 120,
+        "wires": [
+            [
+                "2dce556b2b92226f"
+            ]
+        ]
+    },
+    {
+        "id": "2dce556b2b92226f",
+        "type": "function",
+        "z": "cc39bf8743eb857c",
+        "name": "Form Worldmap Message",
+        "func": "msg.payload.name = \"ASV-1\";\nmsg.payload.icon = \"fa-ship\";\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nreturn msg",
+        "libs": [],
+        "x": 810,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7203eae8d7a15399",
+        "type": "ui_text_input",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "label": "Target",
+        "tooltip": "",
+        "group": "5fbf2137c501ca6c",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "mode": "text",
+        "delay": 300,
+        "topic": "target",
+        "sendOnBlur": false,
+        "className": "",
+        "topicType": "str",
+        "x": 570,
+        "y": 880,
+        "wires": [
+            [
+                "ee5ad316e5448dc8"
+            ]
+        ]
+    },
+    {
+        "id": "59371107343cd17c",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "props": [
+            {
+                "p": "target",
+                "v": "$ASV01$",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 410,
+        "y": 840,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e87c6521e36e273d",
+        "type": "trigger",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "op1": "",
+        "op2": "0",
+        "op1type": "pay",
+        "op2type": "str",
+        "duration": "-5",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 560,
+        "y": 1100,
+        "wires": [
+            [
+                "ee5ad316e5448dc8"
+            ]
+        ]
+    },
+    {
+        "id": "713215fbe9e0915f",
+        "type": "show-value",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "path": "",
+        "x": 770,
+        "y": 1040,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "413b666e8d429be6",
+        "type": "ui_slider",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "label": "Steering guide",
+        "tooltip": "",
+        "group": "5fbf2137c501ca6c",
+        "order": 5,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "outs": "end",
+        "topic": "steering",
+        "topicType": "str",
+        "min": 0,
+        "max": "10",
+        "step": 1,
+        "className": "",
+        "x": 360,
+        "y": 940,
+        "wires": [
+            [
+                "62e3c9a786add8f4",
+                "ee5ad316e5448dc8"
+            ]
+        ]
+    },
+    {
+        "id": "ee5ad316e5448dc8",
+        "type": "join",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "2",
+        "count": "4",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 770,
+        "y": 980,
+        "wires": [
+            [
+                "fb68e337f433690c",
+                "a11849cb0d7abee8"
+            ]
+        ]
+    },
+    {
+        "id": "10386145d17fe71c",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$round($random()*9)",
+        "payloadType": "jsonata",
+        "x": 170,
+        "y": 940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9304b53a0ef19408",
+        "type": "inject",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$round($random()*9)",
+        "payloadType": "jsonata",
+        "x": 170,
+        "y": 980,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a11849cb0d7abee8",
+        "type": "debug",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "34f61fe7f02ae9d2",
+        "type": "trigger",
+        "z": "cc39bf8743eb857c",
+        "name": "",
+        "op1": "1",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "1",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 400,
+        "y": 880,
+        "wires": [
+            [
+                "7203eae8d7a15399"
+            ]
+        ]
+    },
+    {
+        "id": "96e7ebf37fcc7789",
+        "type": "mongodb-aleph-config",
+        "hostname": "asv-tracker.ubzg5ni.mongodb.net",
+        "topology": "dnscluster",
+        "connectOptions": "",
+        "port": "27017",
+        "db": "ASV-Tracker",
+        "name": "SEAIoT-Database"
+    },
+    {
+        "id": "1d73bf26433c1923",
+        "type": "serial-port",
+        "serialport": "COM7",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "5fbf2137c501ca6c",
+        "type": "ui_group",
+        "name": "Monitoring Dashboard",
+        "tab": "f76c8797.584da8",
+        "order": 1,
+        "disp": true,
+        "width": "24",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f76c8797.584da8",
+        "type": "ui_tab",
+        "name": "GPS Tracker",
+        "icon": "gps_fixed",
+        "order": 21
+    }
+]
