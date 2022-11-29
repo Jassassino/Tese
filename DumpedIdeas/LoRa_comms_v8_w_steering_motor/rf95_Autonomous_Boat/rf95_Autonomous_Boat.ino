@@ -31,7 +31,7 @@ void setup() {
   //USB to Raspi
   Serial.begin(9600);
   while (!Serial) ; // Wait for serial port to be available
-  
+  Serial.println("Serial Available");
   //LoRa Initialization
   if (!lora.init())
     Serial.println("init failed");

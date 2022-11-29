@@ -1,0 +1,791 @@
+[
+    {
+        "id": "b7f598b092ae7889",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "55e8b8b9b81f5d0d",
+        "type": "serial out",
+        "z": "b7f598b092ae7889",
+        "name": "USB2Arduino",
+        "serial": "a4cbdca0f131e30f",
+        "x": 1560,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "6e047e0124a7f5ec",
+        "type": "serial in",
+        "z": "b7f598b092ae7889",
+        "name": "Arduino2USB",
+        "serial": "a4cbdca0f131e30f",
+        "x": 190,
+        "y": 420,
+        "wires": [
+            [
+                "736c48c3d99b15df",
+                "ed8df225cce01ef6"
+            ]
+        ]
+    },
+    {
+        "id": "cc23724f39269571",
+        "type": "tcp out",
+        "z": "b7f598b092ae7889",
+        "name": "GPSSignalK",
+        "host": "localhost",
+        "port": "10110",
+        "beserver": "client",
+        "base64": false,
+        "end": false,
+        "tls": "",
+        "x": 850,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "50810a8b16ab9b15",
+        "type": "switch",
+        "z": "b7f598b092ae7889",
+        "name": "switch",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "GLL",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "RMC",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 310,
+        "y": 220,
+        "wires": [
+            [
+                "4bfbf268938f9217"
+            ],
+            [
+                "f8bd3bce60e10700"
+            ]
+        ]
+    },
+    {
+        "id": "f30181b2127f5276",
+        "type": "serial in",
+        "z": "b7f598b092ae7889",
+        "name": "dAISy",
+        "serial": "fb588a77507e0fd2",
+        "x": 170,
+        "y": 100,
+        "wires": [
+            [
+                "cc23724f39269571",
+                "1019c79a82e530c7"
+            ]
+        ]
+    },
+    {
+        "id": "8eda919f2bfe01f4",
+        "type": "serial in",
+        "z": "b7f598b092ae7889",
+        "name": "GPS",
+        "serial": "c3230c26883c4667",
+        "x": 170,
+        "y": 220,
+        "wires": [
+            [
+                "50810a8b16ab9b15",
+                "e25d683cc02fd2a0"
+            ]
+        ]
+    },
+    {
+        "id": "1019c79a82e530c7",
+        "type": "debug",
+        "z": "b7f598b092ae7889",
+        "name": "AIS Output",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "9348f536cc05b160",
+        "type": "Bme280",
+        "z": "b7f598b092ae7889",
+        "name": "BME280",
+        "bus": "1",
+        "address": "0x76",
+        "topic": "bmp280",
+        "extra": false,
+        "x": 380,
+        "y": 340,
+        "wires": [
+            [
+                "e322e337aca5f0ab",
+                "916960323f5bfdd9"
+            ]
+        ]
+    },
+    {
+        "id": "cb4128f55eee9c11",
+        "type": "debug",
+        "z": "b7f598b092ae7889",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1540,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "e322e337aca5f0ab",
+        "type": "function",
+        "z": "b7f598b092ae7889",
+        "name": "TEMP Message Producer",
+        "func": "var checksum = 0;\n\nlet sent = \"IIXDR,C,\" + (msg.payload.temperature_C) + \",C,TempAir\";\n\n//sent = \"IIXDR, P, 1.02481, B, Barometer\";\n\nfor(var i=0;i<sent.length;i++){\n    checksum = checksum ^ sent.charCodeAt(i);\n}\n\nvar val = Number(checksum).toString(16);\n\nmsg.payload = \"$\"+sent+\"*\"+val+\"\\r\\n\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "736c48c3d99b15df",
+        "type": "show-value",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "path": "",
+        "x": 370,
+        "y": 420,
+        "wires": [
+            [
+                "4378271da9650e24"
+            ]
+        ]
+    },
+    {
+        "id": "aec87c2dd9e30c67",
+        "type": "delay",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "5",
+        "nbRateUnits": "10",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1080,
+        "y": 240,
+        "wires": [
+            [
+                "d35adb6b7a6367d5"
+            ]
+        ]
+    },
+    {
+        "id": "e25d683cc02fd2a0",
+        "type": "debug",
+        "z": "b7f598b092ae7889",
+        "name": "debug 8",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "916960323f5bfdd9",
+        "type": "function",
+        "z": "b7f598b092ae7889",
+        "name": "BAR Message Producer",
+        "func": "var checksum = 0;\n\nlet sent = \"IIXDR,P,\" + (msg.payload.pressure_hPa/1000) + \",B,Barometer\";\n\n//sent = \"IIXDR, P, 1.02481, B, Barometer\";\n\nfor(var i=0;i<sent.length;i++){\n    checksum = checksum ^ sent.charCodeAt(i);\n}\n\nvar val = Number(checksum).toString(16);\n\nmsg.payload = \"$\"+sent+\"*\"+val+\"\\r\\n\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4378271da9650e24",
+        "type": "switch",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "respond",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "$ASV01$",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 570,
+        "y": 420,
+        "wires": [
+            [
+                "4c20599d5bb5e0dd"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "4c20599d5bb5e0dd",
+        "type": "trigger",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "op1": "ASV01+$ACKNOWLEDGE",
+        "op2": "ACKNOWLEDGE",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "0",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 820,
+        "y": 400,
+        "wires": [
+            [
+                "13a26d7f56c36501"
+            ]
+        ]
+    },
+    {
+        "id": "eba530ea25642b79",
+        "type": "function",
+        "z": "b7f598b092ae7889",
+        "name": "create messages",
+        "func": "var msg2 = msg;\nmsg.payload = { \"name\": global.get(\"name\"), \"topic\": global.get(\"RMC\") }\nmsg2.payload = { \"name\": global.get(\"name\"), \"topic\": global.get(\"GLL\") }\n\nreturn [msg,msg2];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 280,
+        "wires": [
+            [
+                "aec87c2dd9e30c67"
+            ],
+            [
+                "4c6f6538aad6beb5"
+            ]
+        ]
+    },
+    {
+        "id": "f8bd3bce60e10700",
+        "type": "change",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "RMC",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 240,
+        "wires": [
+            [
+                "eba530ea25642b79"
+            ]
+        ]
+    },
+    {
+        "id": "4bfbf268938f9217",
+        "type": "change",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "GLL",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 200,
+        "wires": [
+            [
+                "eba530ea25642b79"
+            ]
+        ]
+    },
+    {
+        "id": "27e9c51841674321",
+        "type": "change",
+        "z": "b7f598b092ae7889",
+        "name": "ASV01",
+        "rules": [
+            {
+                "t": "set",
+                "p": "name",
+                "pt": "global",
+                "to": "ASV01",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 680,
+        "y": 180,
+        "wires": [
+            [
+                "eba530ea25642b79"
+            ]
+        ]
+    },
+    {
+        "id": "16e3933258198a3f",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "0.1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ASV01",
+        "payloadType": "str",
+        "x": 540,
+        "y": 160,
+        "wires": [
+            [
+                "27e9c51841674321"
+            ]
+        ]
+    },
+    {
+        "id": "4c6f6538aad6beb5",
+        "type": "delay",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "5",
+        "nbRateUnits": "10",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1080,
+        "y": 280,
+        "wires": [
+            [
+                "d35adb6b7a6367d5"
+            ]
+        ]
+    },
+    {
+        "id": "d35adb6b7a6367d5",
+        "type": "delay",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "350",
+        "timeoutUnits": "milliseconds",
+        "rate": "2",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1330,
+        "y": 280,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d",
+                "cb4128f55eee9c11"
+            ]
+        ]
+    },
+    {
+        "id": "13a26d7f56c36501",
+        "type": "delay",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "5",
+        "nbRateUnits": "5",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1060,
+        "y": 400,
+        "wires": [
+            [
+                "d35adb6b7a6367d5"
+            ]
+        ]
+    },
+    {
+        "id": "220380873d055f06",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$S,3",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 400,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d"
+            ]
+        ]
+    },
+    {
+        "id": "ee1f45a3121c417f",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$S,0",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 440,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d"
+            ]
+        ]
+    },
+    {
+        "id": "b564ad416e97c10b",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$D,1",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 640,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d"
+            ]
+        ]
+    },
+    {
+        "id": "94196e65627b5764",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$D,0",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 680,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d"
+            ]
+        ]
+    },
+    {
+        "id": "d98ad92991062db7",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$D,5",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 560,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d"
+            ]
+        ]
+    },
+    {
+        "id": "93a5ca4b3f1e47d3",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$D,3",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 600,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d"
+            ]
+        ]
+    },
+    {
+        "id": "e23608153bca2ccf",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$D,9",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 480,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d"
+            ]
+        ]
+    },
+    {
+        "id": "55dcc4f4d7fb4f8f",
+        "type": "inject",
+        "z": "b7f598b092ae7889",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "$D,7",
+        "payloadType": "str",
+        "x": 1290,
+        "y": 520,
+        "wires": [
+            [
+                "55e8b8b9b81f5d0d"
+            ]
+        ]
+    },
+    {
+        "id": "ed8df225cce01ef6",
+        "type": "debug",
+        "z": "b7f598b092ae7889",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a4cbdca0f131e30f",
+        "type": "serial-port",
+        "serialport": "/dev/ttyUSB0",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "fb588a77507e0fd2",
+        "type": "serial-port",
+        "serialport": "/dev/AMA0",
+        "serialbaud": "38400",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "c3230c26883c4667",
+        "type": "serial-port",
+        "serialport": "/dev/ttyACM0",
+        "serialbaud": "38400",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    }
+]

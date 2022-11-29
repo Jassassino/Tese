@@ -56,7 +56,7 @@ void serialEvent(){
 void SendMessageLoRa(uint8_t *data, int datasize){
   lora.send(data, datasize);
   lora.waitPacketSent();
-
+  
   
 }
 
